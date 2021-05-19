@@ -3,7 +3,7 @@ import os
 file2load=os.path.join("resources","election_data.csv")
 #print(file2load)
 file2write =os.path.join("analysis","election_result.txt")
-#print(os.path.exists(file2load))
+#print(os.path.exists(file2write))
 total_number_votes= 0
 candidate_list=[]
 candidate_dict={}
@@ -28,7 +28,8 @@ percent_dict = {}
 for name in candidate_list:
     #print(name)
     candidate_score = candidate_dict[name]
-    percent_score = (candidate_score/total_number_votes) * 100
+    percent_score = float(candidate_score)/float(total_number_votes) * 100
+    #print(float(candidate_score) / float(total_number_votes))
     percent_dict[name] = percent_score
 
 high_score = 0
@@ -46,16 +47,22 @@ print("-------------------------")
 for name in candidate_list:
     candidate_score = candidate_dict[name]
     candidate_percent = percent_dict[name]
-    #print("{}: {}% ({})".format(name, round(candidate_percent,3), candidate_score))
-    print(f"{name}: {candidate_percent:.3f}% ({candidate_score})")
+    print("{}: {}% ({})".format(name, round(candidate_percent,3), candidate_score))
 print("-------------------------")
 print("Winner: {} ".format(winner))
 print("-------------------------")
 
-#print(percent_dict)
-#print(total_number_votes)
-#print(candidate_list)
-#print(candidate_dict)   
-#print(vote_won_percent)
-#print(winner)
-#print(high_score)
+f = open(file2write, "w")
+f.write("Election Results\n")
+f.write("-------------------------\n")
+f.write("Total Votes: {} \n".format(total_number_votes)) 
+f.write("-------------------------\n")
+for name in candidate_list:
+    candidate_score = candidate_dict[name]
+    candidate_percent = percent_dict[name]
+    f.write("{}: {}% ({})\n".format(name, round(candidate_percent,3),candidate_score))
+f.write("-------------------------\n")
+f.write("Winner: {} \n".format(winner))
+f.write("-------------------------\n")
+f.close()
+
